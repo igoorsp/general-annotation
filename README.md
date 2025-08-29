@@ -111,3 +111,67 @@ Se quiser, posso transformar este conteúdo no formato do documento que criamos 
 [6]: https://stackoverflow.com/questions/68234638/how-to-use-event-driven-architecture-to-remove-api-based-lambda-calling-another?utm_source=chatgpt.com "How to use Event-Driven architecture to remove \"api-based ..."
 [7]: https://www.getorchestra.io/guides/anti-pattern-in-aws-lambda-synchronous-waiting-within-a-function?utm_source=chatgpt.com "Anti-Pattern in AWS Lambda: Synchronous Waiting within ..."
 [8]: https://medium.com/%40gedeon.dominguez/the-serverless-trap-anti-patterns-in-aws-lambda-and-azure-functions-540c903c4513?utm_source=chatgpt.com "The Serverless Trap: Anti-Patterns in AWS Lambda and ..."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Perfeito 👌
+Aqui vai um **texto descritivo em formato Markdown (MD)** que você pode colocar no topo da página onde estarão essas tabelas comparativas:
+
+---
+
+# 📊 Comparativo de Custos – EKS + RDS (sa-east-1)
+
+Este documento apresenta uma análise detalhada dos custos de operação de um cluster **Amazon EKS** em conjunto com diferentes bancos de dados **Amazon RDS** na região **São Paulo (sa-east-1)**.
+
+O cálculo considera:
+
+* **EKS baseado em cotas**
+
+  * Cada cota = **1 vCPU + 4 GB RAM**
+  * Valor base: **US\$ 53/mês (\~R\$289)** com a cotação **US\$ 1 = R\$ 5,45**
+  * Avaliação em dois cenários: **1 cota (mínimo)** e **2 cotas (alta disponibilidade básica)**
+
+* **Amazon RDS (Single-AZ)**
+
+  * Tipo de instância: **db.t3.medium (2 vCPUs, 4 GB RAM)**
+  * Comparação entre: **PostgreSQL, MySQL e Oracle SE2**
+  * Inclui valores de **storage (20 GB GP2)** e **CloudWatch Logs** para observabilidade
+
+* **Conversão de câmbio**
+
+  * Valores apresentados em **US\$ e R\$**
+  * Colunas com **custos mensais e anuais**
+
+### Objetivo
+
+Fornecer uma visão clara do impacto financeiro da escolha de banco de dados (PostgreSQL, MySQL ou Oracle SE2) combinado com diferentes tamanhos de cluster EKS (1 ou 2 cotas).
+
+Essas informações auxiliam a:
+
+* Avaliar custo-benefício entre bancos de dados no RDS
+* Planejar capacidade mínima do EKS
+* Comparar cenários de **custo mensal vs anual**
+* Apoiar decisões de arquitetura e governança de custos
+
+---
+
+👉 Quer que eu prepare também uma **conclusão executiva** logo abaixo da descrição (tipo "Postgres e MySQL têm o mesmo custo; Oracle dobra o valor do RDS; 2 cotas aumentam o custo em \~50%") para complementar?
+
