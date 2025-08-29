@@ -175,3 +175,72 @@ Essas informações auxiliam a:
 
 👉 Quer que eu prepare também uma **conclusão executiva** logo abaixo da descrição (tipo "Postgres e MySQL têm o mesmo custo; Oracle dobra o valor do RDS; 2 cotas aumentam o custo em \~50%") para complementar?
 
+
+
+
+
+
+Boa, agora ficou claro 👌
+
+Você me disse antes que a **cota custa R\$ 301**. Mas agora trouxe que esse valor veio de um cálculo antigo, onde ela foi **US\$ 53 ≈ R\$ 264 com câmbio 4,97**.
+Ou seja:
+
+* Valor base da cota em dólar ≈ **US\$ 53/mês**
+* Cotação antiga (US\$ 1 = R\$ 4,97) → R\$ 264/mês
+* Cotação nova (US\$ 1 = R\$ 5,45) → **R\$ 289/mês**
+
+Então vamos refazer as tabelas considerando essa correção:
+
+---
+
+## 📊 EKS + RDS – Região **sa-east-1**
+
+(Base cota = **US\$ 53/mês**; cotação **US\$ 1 = R\$ 5,45**)
+
+### 🟦 Cenário 1 – **EKS com 1 cota (1 vCPU + 4 GB RAM – US\$53/mês ≈ R\$289/mês)**
+
+| Serviço             | Especificação                              | Mensal (US\$) | Mensal (R\$) | Anual (US\$) | Anual (R\$) |
+| ------------------- | ------------------------------------------ | ------------- | ------------ | ------------ | ----------- |
+| **EKS (1 cota)**    | 1 vCPU, 4 GB RAM                           | \$53          | R\$289       | \$636        | R\$3.468    |
+| **RDS PostgreSQL**  | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$45          | R\$245       | \$540        | R\$2.934    |
+| **RDS MySQL**       | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$45          | R\$245       | \$540        | R\$2.934    |
+| **RDS Oracle SE2**  | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$90          | R\$491       | \$1.080      | R\$5.898    |
+| **Storage RDS**     | 20 GB GP2                                  | \$2,6         | R\$14        | \$31         | R\$170      |
+| **CloudWatch Logs** | Monitoramento EKS + RDS                    | \$10          | R\$55        | \$120        | R\$654      |
+
+**Totais (1 cota):**
+
+* **PostgreSQL** → \$111/mês (R\$603) | \$1.326/ano (R\$6.726)
+* **MySQL** → \$111/mês (R\$603) | \$1.326/ano (R\$6.726)
+* **Oracle SE2** → \$156/mês (R\$849) | \$1.767/ano (R\$10.124)
+
+---
+
+### 🟩 Cenário 2 – **EKS com 2 cotas (2 vCPUs + 8 GB RAM – US\$106/mês ≈ R\$578/mês)**
+
+| Serviço             | Especificação                              | Mensal (US\$) | Mensal (R\$) | Anual (US\$) | Anual (R\$) |
+| ------------------- | ------------------------------------------ | ------------- | ------------ | ------------ | ----------- |
+| **EKS (2 cotas)**   | 2 vCPU, 8 GB RAM                           | \$106         | R\$578       | \$1.272      | R\$6.936    |
+| **RDS PostgreSQL**  | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$45          | R\$245       | \$540        | R\$2.934    |
+| **RDS MySQL**       | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$45          | R\$245       | \$540        | R\$2.934    |
+| **RDS Oracle SE2**  | db.t3.medium, Single-AZ (2 vCPU, 4 GB RAM) | \$90          | R\$491       | \$1.080      | R\$5.898    |
+| **Storage RDS**     | 20 GB GP2                                  | \$2,6         | R\$14        | \$31         | R\$170      |
+| **CloudWatch Logs** | Monitoramento EKS + RDS                    | \$10          | R\$55        | \$120        | R\$654      |
+
+**Totais (2 cotas):**
+
+* **PostgreSQL** → \$158/mês (R\$878) | \$1.872/ano (R\$10.694)
+* **MySQL** → \$158/mês (R\$878) | \$1.872/ano (R\$10.694)
+* **Oracle SE2** → \$203/mês (R\$1.124) | \$2.412/ano (R\$15.592)
+
+---
+
+📌 **Resumo do ajuste:**
+
+* Corrigi a base da **cota para US\$ 53/mês** (≈ R\$289 na cotação 5,45).
+* Recalculei tudo com a nova cotação.
+* Totais ficaram **mais realistas e consistentes** com o dólar atual.
+
+👉 Quer que eu monte agora uma **tabela compacta comparando só os totais (1 cota vs 2 cotas × Postgres, MySQL, Oracle)** para facilitar apresentação executiva?
+
+
