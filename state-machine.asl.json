@@ -1,0 +1,136 @@
+{
+  "Comment": "Step Functions para Cancelamento de Conta",
+  "Version": "1.0",
+  "StartAt": "AtualizaStatusCancelamento",
+  "States": {
+    "AtualizaStatusCancelamento": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene02-arsphoton",
+        "Payload.$": "$"
+      },
+      "PayloadResponseOnly": true,
+      "ResultPath": "$.atualizaStatusCancelamento",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 60,
+          "MaxAttempts": 5
+        }
+      ],
+      "Next": "DeletaRegistroMaquinaEstado"
+    },
+
+    "DeletaRegistroMaquinaEstado": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene05-arsphoton",
+        "Payload.$": "$"
+      },
+      "PayloadResponseOnly": true,
+      "ResultPath": "$.deletarRegistroMaquinaEstado",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 60,
+          "MaxAttempts": 5
+        }
+      ],
+      "Next": "ParallelGateway"
+    },
+
+    "ParallelGateway": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "ConsultaCartoes",
+          "States": {
+            "ConsultaCartoes": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene04-arsphoton",
+                "Payload.$": "$"
+              },
+              "PayloadResponseOnly": true,
+              "ResultPath": "$.cardNumberList",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed"],
+                  "IntervalSeconds": 60,
+                  "MaxAttempts": 5
+                }
+              ],
+              "Next": "BloqueioCartao"
+            },
+
+            "BloqueioCartao": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene01-arsphoton",
+                "Payload.$": "$"
+              },
+              "PayloadResponseOnly": true,
+              "ResultPath": "$.bloqueioCartao",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed"],
+                  "IntervalSeconds": 60,
+                  "MaxAttempts": 5
+                }
+              ],
+              "Next": "CancelamentoCartao"
+            },
+
+            "CancelamentoCartao": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene03-arsphoton",
+                "Payload.$": "$"
+              },
+              "PayloadResponseOnly": true,
+              "ResultPath": "$.cancelamentoCartao",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed"],
+                  "IntervalSeconds": 60,
+                  "MaxAttempts": 5
+                }
+              ],
+              "End": true
+            }
+          }
+        },
+
+        {
+          "StartAt": "EncerraClienteContrato",
+          "States": {
+            "EncerraClienteContrato": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:sa-east-1:734941617154:function:sbrd2abrlamccybrsgene06-arsphoton",
+                "Payload.$": "$"
+              },
+              "PayloadResponseOnly": true,
+              "ResultPath": "$.encerrarClienteContrato",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed"],
+                  "IntervalSeconds": 60,
+                  "MaxAttempts": 5
+                }
+              ],
+              "End": true
+            }
+          }
+        }
+      ],
+      "End": true
+    }
+  }
+}
